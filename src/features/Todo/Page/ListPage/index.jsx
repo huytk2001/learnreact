@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TodoList from '../../../../components/TodoList';
 import AlbumFeature from '../../../../components/Album';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import queryString from 'query-string';
 
 function ListPage(props) {
     const initTodoList = [
@@ -8,46 +10,70 @@ function ListPage(props) {
         { id: 2, title: 'Sleep', status: 'new' },
         { id: 3, title: 'Code', status: 'completed' }
     ];
-  
+    const location = useLocation();
+    const navigate = useNavigate()
+    const param = useParams()
     const [todoList, setTodoList] = useState(initTodoList);
-    const [filteredStatus, setFilteredStatus] = useState('all');
+    const [filteredStatus, setFilteredStatus] = useState(() => {
+        const params = queryString.parse(location.search);
+        return params.status || 'all';
+    });
+
+    useEffect(() => {
+        const params = queryString.parse(location.search);
+        if (params.status) {
+            setFilteredStatus(params.status|| 'all');
+        }
+    }, [location.search]);
 
     const handleTodoClick = (todo, idx) => {
         const newTodoList = [...todoList];
-        const newTodo = {
+        newTodoList[idx] = {
             ...newTodoList[idx],
             status: newTodoList[idx].status === 'new' ? 'completed' : 'new'
         };
-        newTodoList[idx] = newTodo;
         setTodoList(newTodoList);
     };
-
-    const handleShowAllClick = () => {
-        setFilteredStatus('all');
-    };
-
-    const handleShowCompletedClick = () => {
-        setFilteredStatus('completed');
-    };
-
-    const handleShowNewClick = () => {
-        setFilteredStatus('new');
-    };
-
     const renderedTodoList = todoList.filter(todo => 
         filteredStatus === 'all' || filteredStatus === todo.status
     );
+const handleShowAllClick=()=>{
+    setFilteredStatus('all')
+    const queryParams = {status:'all'}
+    navigate({
+        pathname:location.pathname,
+        search:queryString.stringify(queryParams)
+    });
+}
+const handleShowCompleted=()=>{
+   
+    setFilteredStatus('completed')
+    const queryParams = {status:'all'}
+    navigate({
+        pathname:location.pathname,
+        search:queryString.stringify(queryParams)
+    });
+}
 
+const handleShowNew=()=>{
+   
+    const queryParams= {status:'new'}
+    navigate({
+        pathname:location.pathname,
+        search:queryString.stringify(queryParams)
+    })
+
+}
     return (
         <div>
             <h3>Todo List</h3>
             <TodoList todoList={renderedTodoList} onTodoClick={handleTodoClick} />
-           <AlbumFeature/>
+            <AlbumFeature/>
 
             <div>
                 <button onClick={handleShowAllClick}>Show All</button>
-                <button onClick={handleShowCompletedClick}>Show Completed</button>
-                <button onClick={handleShowNewClick}>Show New</button>
+                <button onClick={handleShowCompleted}>Show Completed</button>
+                <button onClick={handleShowNew}>Show New</button>
             </div>
         </div>
     );
