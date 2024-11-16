@@ -3,6 +3,7 @@ import TodoList from '../../../../components/TodoList';
 import AlbumFeature from '../../../../components/Album';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import queryString from 'query-string';
+import TodoFrom from '../../TodoForm';
 
 function ListPage(props) {
     const initTodoList = [
@@ -64,8 +65,14 @@ const handleShowNew=()=>{
     })
 
 }
+ const handleTodoFromSubmit=(values)=>{
+    console.log('Form Submit:',values);
+    
+ }
     return (
         <div>
+            <h3>What to do</h3>
+            <TodoFrom onSubmit={handleTodoFromSubmit}/>
             <h3>Todo List</h3>
             <TodoList todoList={renderedTodoList} onTodoClick={handleTodoClick} />
             <AlbumFeature/>
