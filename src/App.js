@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import TodoFeature from './features/Todo';
 import productApi from './Api/productApi';
+import Header from './components/Header';
 function App() {
   useEffect(()=>{
     const fetchProducts = async()=>{
@@ -15,9 +16,13 @@ function App() {
     }
     fetchProducts()
   },[])
-  return (
+return (
+  <>
+    <Header />
     <TodoFeature />
-  );
+  </>
+);
+
 }
 
 export default App;

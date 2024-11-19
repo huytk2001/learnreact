@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import TodoList from '../../../../components/TodoList';
 import AlbumFeature from '../../../../components/Album';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate,  } from 'react-router-dom';
 import queryString from 'query-string';
 import TodoFrom from '../../TodoForm';
+
 
 function ListPage(props) {
     const initTodoList = [
@@ -13,7 +14,7 @@ function ListPage(props) {
     ];
     const location = useLocation();
     const navigate = useNavigate()
-    const param = useParams()
+    // const param = useParams()
     const [todoList, setTodoList] = useState(initTodoList);
     const [filteredStatus, setFilteredStatus] = useState(() => {
         const params = queryString.parse(location.search);
@@ -67,6 +68,13 @@ const handleShowNew=()=>{
 }
  const handleTodoFromSubmit=(values)=>{
     console.log('Form Submit:',values);
+    const newTodo={
+        id:todoList.length+1,
+        title:values.title,
+        status:'new'
+    }
+    const newTodoList=[...todoList,newTodo]
+    setTodoList(newTodoList)
     
  }
     return (
