@@ -9,44 +9,26 @@ import { LockOutlined } from "@mui/icons-material";
 import { deepOrange } from "@mui/material/colors";
 // import PasswordField from "../../../../components/Album/Components/form-coutrolers/PasswordField/passwordField";
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-function RegisterForm({ onSubmit }) {
+function LoginForm({ onSubmit }) {
   // Cấu hình validation với yup
   const schema = yup.object().shape({
-    name: yup
-      .string()
-      .required("Please enter your name")
-      .test(
-        "should has at least two words",
-        "Please enter at least two words.",
-        (value) => {
-          return value.split(" ").length >= 2;
-        }
-      ),
     email: yup
       .string()
       .required("Please enter your email")
       .email("Please enter a valid email address."),
 
-    password: yup
-      .string()
-      .required("Please enter your password")
-      .min(6, "Please enter at least six chars"),
-    retypePassword: yup.string().required("Please enter your password"),
-    avatar: yup.string().required("Please enter your Avatat").url("avatar"),
+    password: yup.string().required("Please enter your password"),
   });
 
   // Khởi tạo react-hook-form
   const form = useForm({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
-      retypePassword: "",
-      avatar: "",
     },
     resolver: yupResolver(schema), // Dùng yup để validate form
   });
@@ -82,14 +64,11 @@ function RegisterForm({ onSubmit }) {
           margin: theme.spacing(2, 0, 3, 0),
         })}
       >
-        Create An Account
+        Sign in
       </Typography>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField name="name" label="Full name" form={form} />
         <InputField name="email" label="Email" form={form} />
         <InputField name="password" label="Password" form={form} />
-        <InputField name="retypePassword" label="Retype Password" form={form} />
-        <InputField name="avatar" label="Avatar" form={form} />
 
         <Button
           disabled={isSubmitting}
@@ -102,11 +81,11 @@ function RegisterForm({ onSubmit }) {
           type="submit"
           fullWidth
         >
-          Create an account
+          Sign in
         </Button>
       </form>
     </div>
   );
 }
 
-export default RegisterForm;
+export default LoginForm;

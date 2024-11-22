@@ -13,12 +13,19 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import TextField from "@mui/material/TextField";
+// import TextField from "@mui/material/TextField";
 import Register from "../../features/Auth/components/Register";
+import Login from "../../features/Auth/components/Login";
+import { Close } from "@mui/icons-material";
+
+const MODE = {
+  LOGIN: "login",
+  REGISTER: "register",
+};
 
 export default function Header() {
   const [open, setOpen] = React.useState(false);
-
+  const [mode, setMode] = React.useState(MODE.LOGIN);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -70,13 +77,47 @@ export default function Header() {
         </AppBar>
         <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
           <DialogTitle>Register</DialogTitle>
+          <IconButton
+            sx={(theme) => ({
+              position: "absolute",
+              top: theme.spacing(1),
+              right: theme.spacing(1),
+              color: theme.palette.grey[500],
+            })}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
           <DialogContent>
+            {mode === MODE.REGISTER && (
+              <>
+                <Register closeDialog={handleClose} />
+                <Box textAlign="center">
+                  <button color="primary" onClick={() => setMode(MODE.LOGIN)}>
+                    Already have an account. Login here
+                  </button>
+                </Box>
+              </>
+            )}
             {/* Directly render the Register component */}
-            <Register />
+            {mode === MODE.LOGIN && (
+              <>
+                <Login closeDialog={handleClose} />
+                <Box textAlign="center">
+                  <button
+                    color="primary"
+                    onClick={() => setMode(MODE.REGISTER)}
+                  >
+                    Don't have an account.
+                  </button>
+                </Box>
+              </>
+            )}
           </DialogContent>
-          <DialogActions>
+
+          {/* <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-          </DialogActions>
+          </DialogActions> */}
         </Dialog>
       </Box>
     </div>

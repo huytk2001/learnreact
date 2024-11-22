@@ -6,7 +6,7 @@ const userApi = {
     return axiosClient.get(url, { params });
   },
   getId(id) {
-    const url = `/products/${id}`;
+    const url = `/users/${id}`;
     return axiosClient.get(url);
   },
   register(data) {
@@ -18,8 +18,12 @@ const userApi = {
     return axiosClient.patch(url, data);
   },
   remove(id) {
-    const url = `/products/${id}`;
+    const url = `/users/${id}`;
     return axiosClient.delete(url);
+  },
+  login(data) {
+    const url = "/auth/login";
+    return axiosClient.post(url, data);
   },
 };
 export default userApi;
