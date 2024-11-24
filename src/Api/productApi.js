@@ -6,11 +6,11 @@ const productApi = {
       const response = await axiosClient.get("/products", { params });
       console.log("API Response:", response);
       // Kiểm tra xem có 'data' trong response hay không
-      if (response) {
+      if (response && response.length > 0) {
         return response; // Trả về dữ liệu nếu có
       }
       // Nếu không có dữ liệu, trả về mảng rỗng
-      return [];
+      return;
     } catch (error) {
       console.error("Error fetching products:", error);
       return []; // Trả về mảng rỗng khi gặp lỗi
